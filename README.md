@@ -1,4 +1,4 @@
-# tf-mod-ecs-service
+# terraform-mod-ecs-service
 
 ## Inputs
 
