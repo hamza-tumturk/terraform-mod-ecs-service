@@ -1,5 +1,7 @@
 # terraform-mod-ecs-service
 
+This Terraform module provides an ECS Fargate service.
+
 ## Inputs
 
 ### aws_ecs_task_definition
