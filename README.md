@@ -53,6 +53,7 @@
 
 ### aws_ecs_service
 | Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
 | service_name | The name of the service | string | `""` | yes |
 | desired_count | The number of instances of the task definition to place and keep running. | int | `1` | no |
 | subnet_ids | The subnets associated with the task or service | list | `[]` | yes |
@@ -60,46 +61,15 @@
 | assign_public_ip | Assign a public IP address to the ENI (Fargate launch type only) | bool | `false` | no |
 
 ## aws_codedeploy_deployment_group
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
 | deployment_controller_type | Type of deployment controller. Valid values: CODE_DEPLOY, ECS | string | `ECS` | no |
 
 ### aws_appautoscaling
 | Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
 | autoscaling_enabled | Enable/Disable autoscaling | bool | `false` | no |
 | cpu_low_threshold_percent | If the average CPU utilization over a minute drops to this threshold, reduce number of container | int | `20` | no |
 | cpu_high_threshold_percent | If the average CPU utilization over a minute rises to this threshold, increase number of container | int | `80` | yes |
 | autoscale_max_capacity | The max autoscaling capacity of the ECS service. | int | `1` | no |
 | autoscale_min_capacity | The min autoscaling capacity of the ECS service. | int | `1` | no |
-
-### autoscaling metrics  example
-|autoscaling_metrics = [
- # https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricAlarm.html
-|  {
-|  name                = "event-latency"
-|  scale_up_alarm      = 60 #high threshold must be 10, 30 or a multiple of 60
-|  scale_down_alarm    = 30 #low_threshold must be 10, 30 or a multiple of 60
-|  evaluation_periods  = 5
-|  comparison_operator = "GreaterThanOrEqualToThreshold" #Member must satisfy enum value set: [GreaterThanThreshold, LessThanThreshold, LessThanOrEqualToThreshold, GreaterThanOrEqualToThreshold]
-|  namespace           = "adept-tracker"
-|  period              = 120 #must be 10, 30 or a multiple of 60
-|  statistic           = "Average" #Valid Values: SampleCount | Average | Sum | Minimum | Maximum
-|},
-|]
-
-### The default values of the autoscaling metrics
-|variable "autoscaling_metrics" {
-|  type    = list
-|  default = [    
-|    {
-|      metric_name              = "CPUUtilization"
-|     scale_up_threshold       = "80"
-|      scale_down_threshold     = "35"
-|      evaluation_periods       = "1"
-|      comparison_operator_high = "GreaterThanOrEqualToThreshold"
-|      comparison_operator_low  = "LessThanThreshold"
-|     namespace                = "AWS/ECS"
-|      period                   = "60"
-|      statistic                = "Average"
-|    }
-|   ]
-|  description = "The list of metrics_alarms for autoscaling"
-|}
